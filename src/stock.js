@@ -19,4 +19,24 @@ function displayArticle(warehouse, articleId) {
     console.log(article);
 }
 
-module.exports = {displayReport, displayArticle};
+function removeQuantityArticle(warehouse, articleId, quantity) {
+    if (typeof articleId !== "number") {
+        throw new Error("ArticleId must be a number");
+    }
+    if (typeof quantity !== "number" && quantity > 0) {
+        throw new Error("Quantity must be a number");
+    } else if (quantity <= 0){
+        throw new Error("Quantity must be positive and not 0");
+    } else {
+        let article = warehouse.find(article => article.id === articleId);
+        if (article == null ){
+            throw new Error("Article not found");
+        }
+        if (quantity > article.quantity ){
+            throw new Error("Not enough quantity in the warehouse");
+        }
+        article.quantity -= quantity;
+    }
+}
+
+module.exports = {displayReport, displayArticle, removeQuantityArticle};

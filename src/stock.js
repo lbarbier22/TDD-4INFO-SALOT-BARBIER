@@ -1,4 +1,4 @@
-function display(warehouse) {
+function displayReport(warehouse) {
     warehouse.forEach(article => {
         let res = article;
         if (article.quantity < 50) {
@@ -8,4 +8,8 @@ function display(warehouse) {
     });
 }
 
-module.exports = {display};
+function displayArticle(warehouse, articleId) {
+    throw new Error("not implemented");
+}
+
+module.exports = {displayReport, displayArticle};

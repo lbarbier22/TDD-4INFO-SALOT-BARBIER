@@ -7,11 +7,13 @@ const warehouse = [
     new Article(3,"lamp",0),
 ]
 
+beforeEach(() => {
+    console.log = jest.fn();
+});
 
 
 describe ("When I want to display the stock of my warehouse", () => {
     test("Then it prints the report with corresponding flags", () => {
-        console.log = jest.fn();
         displayReport(warehouse);
         expect(console.log).toHaveBeenCalledTimes(warehouse.length);
         expect(console.log).toHaveBeenCalledWith(warehouse[0]);
@@ -21,11 +23,6 @@ describe ("When I want to display the stock of my warehouse", () => {
 });
 
 describe ("When I want to display the stock of on of my article", () => {
-
-    beforeEach(() => {
-        console.log = jest.fn();
-    });
-
     test("With an articleId of an article that exist, Then it prints the details", () => {
         displayArticle(warehouse, 2);
         expect(console.log).toHaveBeenCalledWith(warehouse[1]);

@@ -9,7 +9,14 @@ function displayReport(warehouse) {
 }
 
 function displayArticle(warehouse, articleId) {
-    throw new Error("not implemented");
+    if (typeof articleId !== "number") {
+        throw new Error("ArticleId must be a number");
+    }
+    let article = warehouse.find(article => article.id === articleId);
+    if (article == null) {
+        throw new Error("Article not found");
+    }
+    console.log(article);
 }
 
 module.exports = {displayReport, displayArticle};

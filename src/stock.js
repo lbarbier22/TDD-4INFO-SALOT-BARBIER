@@ -29,6 +29,9 @@ function removeQuantityArticle(warehouse, articleId, quantity) {
         throw new Error("Quantity must be positive and not 0");
     } else {
         let article = warehouse.find(article => article.id === articleId);
+        if (article == null ){
+            throw new Error("Article not found");
+        }
         if (quantity > article.quantity ){
             throw new Error("Not enough quantity in the warehouse");
         }

@@ -60,4 +60,8 @@ describe ("When I want to remove quantity of my article", () => {
     test("With an articleId that is not a number and a quantity that is coherent Then it returns an error", () => {
         expect(() => removeQuantityArticle(warehouse, "10", 100)).toThrow("ArticleId must be a number");
     });
+
+    test("With an articleId of an article that does not exist and a quantity that is coherent Then it returns an error", () => {
+        expect(() => removeQuantityArticle(warehouse, 10, 100)).toThrow("Article not found");
+    });
 });

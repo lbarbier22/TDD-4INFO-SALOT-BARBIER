@@ -19,4 +19,8 @@ function displayArticle(warehouse, articleId) {
     console.log(article);
 }
 
-module.exports = {displayReport, displayArticle};
+function addQuantityArticle(warehouse, articleId, quantity) {
+    throw new Error("not implemented");
+}
+
+module.exports = {displayReport, displayArticle, addQuantityArticle};

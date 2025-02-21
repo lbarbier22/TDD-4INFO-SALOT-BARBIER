@@ -1,5 +1,5 @@
 const { displayReport, displayArticle, addQuantityArticle, removeQuantityArticle } = require("../src/stock");
-const Article = require("../src/article");
+const {Article} = require("../src/article");
 
 const warehouse = [
     new Article(1,"table",200),

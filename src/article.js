@@ -6,4 +6,16 @@ class Article{
     }
 }
 
-module.exports = Article;
+function articleIdMustBeANumber(articleId){
+    if (typeof articleId !== "number") {
+        throw new Error("ArticleId must be a number");
+    }
+}
+
+function articleNotFound(article){
+    if (article == null ){
+        throw new Error("Article not found");
+    }
+}
+
+module.exports = {Article, articleIdMustBeANumber, articleNotFound};

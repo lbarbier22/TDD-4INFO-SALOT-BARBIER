@@ -1,3 +1,5 @@
+const {articleNotFound, articleIdMustBeANumber} = require("../src/article")
+
 function displayReport(warehouse) {
     warehouse.forEach(article => {
         let res = article;
@@ -9,20 +11,14 @@ function displayReport(warehouse) {
 }
 
 function displayArticle(warehouse, articleId) {
-    if (typeof articleId !== "number") {
-        throw new Error("ArticleId must be a number");
-    }
+    articleIdMustBeANumber(articleId);
     let article = warehouse.find(article => article.id === articleId);
-    if (article == null) {
-        throw new Error("Article not found");
-    }
+    articleNotFound(article);
     console.log(article);
 }
 
 function addQuantityArticle(warehouse, articleId, quantity) {
-    if (typeof articleId !== "number") {
-        throw new Error("ArticleId must be a number");
-    }
+    articleIdMustBeANumber(articleId);
     if (typeof quantity !== "number" && quantity > 0) {
         throw new Error("Quantity must be a number");
     } else if (quantity <= 0) {
@@ -31,26 +27,20 @@ function addQuantityArticle(warehouse, articleId, quantity) {
 
     let article = warehouse.find(article => article.id === articleId);
 
-    if (article == null) {
-        throw new Error("Article not found");
-    }
+    articleNotFound(article);
 
     article.quantity += quantity;
 }
 
 function removeQuantityArticle(warehouse, articleId, quantity) {
-    if (typeof articleId !== "number") {
-        throw new Error("ArticleId must be a number");
-    }
+    articleIdMustBeANumber(articleId);
     if (typeof quantity !== "number" && quantity > 0) {
         throw new Error("Quantity must be a number");
     } else if (quantity <= 0){
         throw new Error("Quantity must be positive and not 0");
     } else {
         let article = warehouse.find(article => article.id === articleId);
-        if (article == null ){
-            throw new Error("Article not found");
-        }
+        articleNotFound(article);
         if (quantity > article.quantity ){
             throw new Error("Not enough quantity in the warehouse");
         }

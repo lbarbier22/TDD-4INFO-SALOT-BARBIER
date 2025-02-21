@@ -1,13 +1,16 @@
 const { displayReport, displayArticle, addQuantityArticle, removeQuantityArticle } = require("../src/stock");
 const {Article} = require("../src/article");
+const fs = require("fs");
 
 const warehouse = [
     new Article(1,"table",200),
     new Article(2,"chair",400),
     new Article(3,"lamp",0),
+    new Article(4,"carpet",200)
 ]
 
 beforeEach(() => {
+    jest.restoreAllMocks();
     console.log = jest.fn();
 });
 
@@ -42,7 +45,7 @@ describe ("When I want to display the stock of my article", () => {
     });
 
     test("With an articleId of an article that doesn't exist, Then it returns an error", () => {
-        expect(() => displayArticle(warehouse, 4)).toThrow("Article not found");
+        expect(() => displayArticle(warehouse, 666)).toThrow("Article not found");
     });
 
     test("And the console not working, then return 'Console not working'", () => {
@@ -75,15 +78,25 @@ describe ("When I want to add some quantities to one of my article", () => {
     });
 
     test("With an articleId of an article that doesn't exist, Then it should return an error", () => {
-        expect(() => addQuantityArticle(warehouse, 4, 100)).toThrow("Article not found");
+        expect(() => addQuantityArticle(warehouse, 666, 100)).toThrow("Article not found");
+    });
+
+    test("When the logging fails during addition, then it returns an alert 'The operation was successful but not logged'", () => {
+        jest.spyOn(fs, "appendFileSync").mockImplementation(() => {
+            throw new Error("Simulated logging failure");
+        });
+
+        expect(() => addQuantityArticle(warehouse, 1, 50)).toThrow("The operation was successful but not logged");
+        expect(warehouse[0].quantity).toBe(250);
     });
 });
 
 describe ("When I want to remove quantity of my article", () => {
     test("With an articleId of an article that exist and a quantity that is coherent Then it removes the quantity from the article", () => {
-        const expectedArticle = new Article(2,"chair",350);
+        const articleMock = new Article(2,"chair",350);
+
         removeQuantityArticle(warehouse, 2, 50);
-        expect(warehouse[1]).toEqual(expectedArticle);
+        expect(warehouse[1]).toEqual(articleMock);
     });
 
     test("With an articleId of an article that exist and a quantity that is coherent Then it removes the quantity from the article", () => {
@@ -109,5 +122,14 @@ describe ("When I want to remove quantity of my article", () => {
 
     test("With an articleId of an article that does not exist and a quantity that is coherent Then it returns an error", () => {
         expect(() => removeQuantityArticle(warehouse, 10, 100)).toThrow("Article not found");
+    });
+
+    test("When the logging fails during removal, then it returns an alert 'The operation was successful but not logged'", () => {
+        jest.spyOn(fs, "appendFileSync").mockImplementation(() => {
+            throw new Error("Simulated logging failure");
+        });
+
+        expect(() => removeQuantityArticle(warehouse, 4, 50)).toThrow("The operation was successful but not logged");
+        expect(warehouse[3].quantity).toBe(150);
     });
 });

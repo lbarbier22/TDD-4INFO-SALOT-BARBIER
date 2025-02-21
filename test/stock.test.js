@@ -6,9 +6,11 @@ const warehouse = [
     new Article(1,"table",200),
     new Article(2,"chair",400),
     new Article(3,"lamp",0),
+    new Article(4,"carpet",200)
 ]
 
 beforeEach(() => {
+    jest.restoreAllMocks();
     console.log = jest.fn();
 });
 
@@ -35,7 +37,7 @@ describe ("When I want to display the stock of my article", () => {
     });
 
     test("With an articleId of an article that doesn't exist, Then it returns an error", () => {
-        expect(() => displayArticle(warehouse, 4)).toThrow("Article not found");
+        expect(() => displayArticle(warehouse, 666)).toThrow("Article not found");
     });
 });
 

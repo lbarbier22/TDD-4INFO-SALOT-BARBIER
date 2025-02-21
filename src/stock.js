@@ -1,4 +1,5 @@
 const {articleNotFound, articleIdMustBeANumber} = require("../src/article")
+const { logOperation } = require("../src/log");
 
 function displayReport(warehouse) {
     warehouse.forEach(article => {
@@ -30,6 +31,11 @@ function addQuantityArticle(warehouse, articleId, quantity) {
     articleNotFound(article);
 
     article.quantity += quantity;
+    try {
+        logOperation("ADD", article, quantity);
+    } catch (err) {
+        throw new Error("The operation was successful but not logged");
+    }
 }
 
 function removeQuantityArticle(warehouse, articleId, quantity) {
@@ -45,6 +51,11 @@ function removeQuantityArticle(warehouse, articleId, quantity) {
             throw new Error("Not enough quantity in the warehouse");
         }
         article.quantity -= quantity;
+        try {
+            logOperation("REMOVE", article, quantity);
+        } catch (err) {
+            throw new Error("The operation was successful but not logged");
+        }
     }
 }
 

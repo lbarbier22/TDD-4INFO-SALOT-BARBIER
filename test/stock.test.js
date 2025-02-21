@@ -21,7 +21,15 @@ describe ("When I want to display the stock of my warehouse", () => {
         expect(console.log).toHaveBeenCalledTimes(warehouse.length);
         expect(console.log).toHaveBeenCalledWith(warehouse[0]);
         expect(console.log).toHaveBeenCalledWith(warehouse[1]);
-        expect(console.log).toHaveBeenCalledWith(warehouse[2] + " flag");
+        expect(console.log).toHaveBeenCalledWith(warehouse[2] + " Warning : The quantity of this article is low");
+    });
+
+    test("And the console not working, then return 'Console not working'", () => {
+        console.log = jest.fn(() => {
+            throw new Error("Console not working");
+        });
+
+        expect(() => displayReport(warehouse)).toThrow("Console not working");
     });
 });
 
@@ -38,6 +46,14 @@ describe ("When I want to display the stock of my article", () => {
 
     test("With an articleId of an article that doesn't exist, Then it returns an error", () => {
         expect(() => displayArticle(warehouse, 666)).toThrow("Article not found");
+    });
+
+    test("And the console not working, then return 'Console not working'", () => {
+        console.log = jest.fn(() => {
+            throw new Error("Console not working");
+        });
+
+        expect(() => displayReport(warehouse)).toThrow("Console not working");
     });
 });
 
@@ -83,6 +99,11 @@ describe ("When I want to remove quantity of my article", () => {
         expect(warehouse[1]).toEqual(articleMock);
     });
 
+    test("With an articleId of an article that exist and a quantity that is coherent Then it removes the quantity from the article", () => {
+        removeQuantityArticle(warehouse, 2, 320);
+        expect(console.log).toHaveBeenCalledWith("Warning : The quantity of this article is low");
+    });
+
     test("With an articleId of an article that exist and a quantity that is negative Then it returns an error", () => {
         expect(() => removeQuantityArticle(warehouse, 2, -20)).toThrow("Quantity must be positive and not 0");
     });
@@ -92,7 +113,7 @@ describe ("When I want to remove quantity of my article", () => {
     });
 
     test("With an articleId of an article that exist and a quantity that is coherent but there is not enough stock in the warehouse Then it returns an error", () => {
-        expect(() => removeQuantityArticle(warehouse, 2, 500)).toThrow("Not enough quantity in the warehouse");
+        expect(() => removeQuantityArticle(warehouse, 2, 500)).toThrow("Not enough quantity in the warehouse for this article");
     });
 
     test("With an articleId that is not a number and a quantity that is coherent Then it returns an error", () => {

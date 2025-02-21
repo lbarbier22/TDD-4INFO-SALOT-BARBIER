@@ -5,7 +5,7 @@ function displayReport(warehouse) {
     warehouse.forEach(article => {
         let res = article;
         if (article.quantity < 50) {
-            res += " flag";
+            res += " Warning : The quantity of this article is low";
         }
         console.log(res);
     });
@@ -48,13 +48,19 @@ function removeQuantityArticle(warehouse, articleId, quantity) {
         let article = warehouse.find(article => article.id === articleId);
         articleNotFound(article);
         if (quantity > article.quantity ){
-            throw new Error("Not enough quantity in the warehouse");
+            throw new Error("Not enough quantity in the warehouse for this article");
         }
         article.quantity -= quantity;
+
+        if (article.quantity < 50) {
+            console.log("Warning : The quantity of this article is low")
+        }
+
         try {
             logOperation("REMOVE", article, quantity);
         } catch (err) {
             throw new Error("The operation was successful but not logged");
+
         }
     }
 }

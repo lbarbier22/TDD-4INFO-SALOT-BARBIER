@@ -20,6 +20,14 @@ describe ("When I want to display the stock of my warehouse", () => {
         expect(console.log).toHaveBeenCalledWith(warehouse[1]);
         expect(console.log).toHaveBeenCalledWith(warehouse[2] + " flag");
     });
+
+    test("And the console not working, then return 'Console not working'", () => {
+        console.log = jest.fn(() => {
+            throw new Error("Console not working");
+        });
+
+        expect(() => displayReport(warehouse)).toThrow("Console not working");
+    });
 });
 
 describe ("When I want to display the stock of my article", () => {
@@ -35,6 +43,14 @@ describe ("When I want to display the stock of my article", () => {
 
     test("With an articleId of an article that doesn't exist, Then it returns an error", () => {
         expect(() => displayArticle(warehouse, 4)).toThrow("Article not found");
+    });
+
+    test("And the console not working, then return 'Console not working'", () => {
+        console.log = jest.fn(() => {
+            throw new Error("Console not working");
+        });
+
+        expect(() => displayReport(warehouse)).toThrow("Console not working");
     });
 });
 
@@ -79,7 +95,7 @@ describe ("When I want to remove quantity of my article", () => {
     });
 
     test("With an articleId of an article that exist and a quantity that is coherent but there is not enough stock in the warehouse Then it returns an error", () => {
-        expect(() => removeQuantityArticle(warehouse, 2, 500)).toThrow("Not enough quantity in the warehouse");
+        expect(() => removeQuantityArticle(warehouse, 2, 500)).toThrow("Not enough quantity in the warehouse for this article");
     });
 
     test("With an articleId that is not a number and a quantity that is coherent Then it returns an error", () => {

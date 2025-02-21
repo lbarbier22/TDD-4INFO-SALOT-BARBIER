@@ -18,7 +18,7 @@ describe ("When I want to display the stock of my warehouse", () => {
         expect(console.log).toHaveBeenCalledTimes(warehouse.length);
         expect(console.log).toHaveBeenCalledWith(warehouse[0]);
         expect(console.log).toHaveBeenCalledWith(warehouse[1]);
-        expect(console.log).toHaveBeenCalledWith(warehouse[2] + " flag");
+        expect(console.log).toHaveBeenCalledWith(warehouse[2] + " Warning : The quantity of this article is low");
     });
 
     test("And the console not working, then return 'Console not working'", () => {
@@ -84,6 +84,11 @@ describe ("When I want to remove quantity of my article", () => {
         const expectedArticle = new Article(2,"chair",350);
         removeQuantityArticle(warehouse, 2, 50);
         expect(warehouse[1]).toEqual(expectedArticle);
+    });
+
+    test("With an articleId of an article that exist and a quantity that is coherent Then it removes the quantity from the article", () => {
+        removeQuantityArticle(warehouse, 2, 320);
+        expect(console.log).toHaveBeenCalledWith("Warning : The quantity of this article is low");
     });
 
     test("With an articleId of an article that exist and a quantity that is negative Then it returns an error", () => {
